@@ -7,6 +7,8 @@ import torch
 import torch.nn as nn
 import pretrainedmodels
 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 def l2_norm(input, axis=1):
     norm = torch.norm(input, 2, axis, True)
