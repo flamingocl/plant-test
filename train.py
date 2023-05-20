@@ -25,8 +25,8 @@ from lrs_scheduler import WarmRestart, warm_restart
 class CoolSystem(pl.LightningModule):
     def __init__(self, hparams):
         super().__init__()
-        self.hparams = hparams
-
+        # self.hparams = hparams
+        self.save_hyperparameters(hparams)
         # 让每次模型初始化一致, 不让只要中间有再次初始化的情况, 结果立马跑偏
         seed_reproducer(self.hparams.seed)
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
     # Init Hyperparameters
     hparams = init_hparams()
-
+   
     # init logger
     logger = init_logger("kun_out", log_dir=hparams.log_dir)
 
@@ -146,7 +146,7 @@ if __name__ == "__main__":
             monitor="val_roc_auc",
             save_top_k=6,
             mode="max",
-            filepath=os.path.join(hparams.log_dir, f"fold={fold_i}" + "-{epoch}-{val_loss:.4f}-{val_roc_auc:.4f}"),
+            dirpath=os.path.join(hparams.log_dir, f"fold={fold_i}" + "-{epoch}-{val_loss:.4f}-{val_roc_auc:.4f}"),
         )
         early_stop_callback = EarlyStopping(monitor="val_roc_auc", patience=10, mode="max", verbose=True)
 
